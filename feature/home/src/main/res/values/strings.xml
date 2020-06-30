@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Home -->
+    <string name="home_title">Home</string>
+
+    <!-- Users -->
+    <string name="users_title">Users</string>
+
+    <!-- History -->
+    <string name="history_title">History</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_enable_dark_theme">Enable dark theme</string>
+    <string name="settings_logout">Logout</string>
+
+</resources>

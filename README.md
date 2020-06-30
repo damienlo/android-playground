@@ -1,2 +1,11 @@
 # android-playground
+- Gradle Kotlin DSL
+- ViewBinding
+- Retrofit + auth
+- Modular architecture
 - Dagger hilt
+- Navigation component
+- Fragment transition
+- DayNight theme
+- MVVM
+- Clean architecture

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Registration -->
+    <string name="registration_welcome">Welcome</string>
+    <string name="registration_auto_login">Auto login</string>
+
+    <string name="registration_sign_in">Sign in</string>
+    <string name="registration_sign_up">Sign up</string>
+
+    <string name="registration_name_hint">Name</string>
+    <string name="registration_email_hint">Email</string>
+    <string name="registration_password_hint">Password</string>
+    <string name="registration_confirm_password_hint">Retype password</string>
+
+    <string name="registration_not_a_member_yet_sign_up">Not a member yet? Sign up</string>
+    <string name="registration_not_a_member_yet_text_to_highlight">Sign up</string>
+
+    <string name="registration_already_a_member_sign_in">Already a member? Sign in</string>
+    <string name="registration_already_a_member_sign_in_text_to_highlight">Sign in</string>
+
+</resources>

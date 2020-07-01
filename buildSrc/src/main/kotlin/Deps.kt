@@ -14,12 +14,25 @@ object BuildPlugins {
     const val kotlinKapt = "kotlin-kapt"
     const val safeArgs = "androidx.navigation.safeargs.kotlin"
     const val daggerHilt = "dagger.hilt.android.plugin"
+
+    object Custom {
+        const val appPlugin = "AppPlugin"
+        const val featureLibPlugin = "FeatureLibPlugin"
+        const val commonLibPlugin = "CommonLibPlugin"
+    }
 }
+
 
 object AndroidSdk {
     const val minSdkVersion = 21
     const val compileSdkVersion = 29
     const val targetSdkVersion = 29
+}
+
+object App {
+    const val applicationId = "com.vito.cornelius.archer"
+    const val versionCode = 1
+    const val versionName = "1.0"
 }
 
 object Libraries {

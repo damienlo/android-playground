@@ -16,4 +16,9 @@ dependencies {
     kapt(Libraries.moshiCodeGen)
 
     implementation(project(":domain:common"))
+
+    testImplementation(TestLibraries.junit4)
+    testImplementation(TestLibraries.mockitoInline)
+    testImplementation(TestLibraries.mockitoKotlin)
+    testImplementation(TestLibraries.coroutinesTest)
 }

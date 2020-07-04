@@ -3,8 +3,8 @@ package com.vito.cornelius.data.authentication.token
 import android.util.Log
 import com.vito.cornelius.data.authentication.RefreshTokenService
 import com.vito.cornelius.data.authentication.model.response.AuthenticationTokenResponse
-import com.vito.cornelius.data.session.UserSessionRepository
 import com.vito.cornelius.domain.common.model.AuthenticationToken
+import com.vito.cornelius.domain.common.repository.IUserSessionRepository
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -12,8 +12,8 @@ import okhttp3.Route
 import javax.inject.Inject
 
 class TokenAuthenticator @Inject constructor(
-        private val sessionRepository: UserSessionRepository,
-        private val refreshTokenService: RefreshTokenService
+        private val refreshTokenService: RefreshTokenService,
+        private val sessionRepository: IUserSessionRepository
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {

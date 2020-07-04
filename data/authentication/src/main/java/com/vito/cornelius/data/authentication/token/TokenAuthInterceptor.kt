@@ -1,12 +1,12 @@
 package com.vito.cornelius.data.authentication.token
 
-import com.vito.cornelius.data.session.UserSessionRepository
+import com.vito.cornelius.domain.common.repository.IUserSessionRepository
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
 class TokenAuthInterceptor @Inject constructor(
-        private val sessionRepository: UserSessionRepository
+        private val sessionRepository: IUserSessionRepository
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {

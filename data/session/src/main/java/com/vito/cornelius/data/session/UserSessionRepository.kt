@@ -5,34 +5,35 @@ import com.squareup.moshi.Moshi
 import com.vito.cornelius.data.session.model.SerializedSession
 import com.vito.cornelius.domain.common.model.AuthenticationToken
 import com.vito.cornelius.domain.common.model.UserSession
+import com.vito.cornelius.domain.common.repository.IUserSessionRepository
 import javax.inject.Inject
 import javax.inject.Named
 
 class UserSessionRepository @Inject constructor(
         private val moshi: Moshi,
         @Named("sessionPreferences") private val sessionPrefs: SharedPreferences
-) {
+) : IUserSessionRepository {
 
-    fun save(userSession: UserSession) {
+    override fun get(): UserSession? {
+        val adapter = moshi.adapter<SerializedSession>(SerializedSession::class.java)
+        val jsonSerializedSession = sessionPrefs.getString(KEY_USER_SESSION, null)
+        return jsonSerializedSession?.let { adapter.fromJson(it)?.toUserSession() }
+    }
+
+    override fun save(userSession: UserSession) {
         val adapter = moshi.adapter<SerializedSession>(SerializedSession::class.java)
         val jsonUserSession = adapter.toJson(userSession.toSerializedSession())
         sessionPrefs.edit().putString(KEY_USER_SESSION, jsonUserSession).apply()
     }
 
-    fun save(newAuthenticationToken: AuthenticationToken) {
+    override fun save(newAuthenticationToken: AuthenticationToken) {
         get()?.let { currentSession ->
             val newSession = currentSession.copy(authenticationToken = newAuthenticationToken)
             save(newSession)
         }
     }
 
-    fun get(): UserSession? {
-        val adapter = moshi.adapter<SerializedSession>(SerializedSession::class.java)
-        val jsonSerializedSession = sessionPrefs.getString(KEY_USER_SESSION, null)
-        return jsonSerializedSession?.let { adapter.fromJson(it)?.toUserSession() }
-    }
-
-    fun clear() {
+    override fun clear() {
         sessionPrefs.edit().remove(KEY_USER_SESSION).apply()
     }
 

@@ -5,17 +5,17 @@ import com.vito.cornelius.data.authentication.model.request.UserSignUpBodyReques
 import com.vito.cornelius.data.authentication.model.response.AuthenticationTokenResponse
 import com.vito.cornelius.data.authentication.model.response.UserCreatedResponse
 import com.vito.cornelius.data.authentication.model.response.UserLoginResponse
-import com.vito.cornelius.data.session.UserSessionRepository
 import com.vito.cornelius.domain.common.model.AuthenticationToken
 import com.vito.cornelius.domain.common.model.UserSession
 import com.vito.cornelius.domain.common.repository.IAuthenticationRepository
+import com.vito.cornelius.domain.common.repository.IUserSessionRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AuthenticationRepository @Inject constructor(
         private val authenticationService: AuthenticationService,
-        private val sessionRepository: UserSessionRepository
+        private val sessionRepository: IUserSessionRepository
 ) : IAuthenticationRepository {
 
     override suspend fun createAccount(name: String, email: String, password: String) {

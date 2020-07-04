@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.vito.cornelius.core.android.SingleEvent
+import com.vito.cornelius.core.android.observe
 import com.vito.cornelius.core.navigation.Navigation
 import com.vito.cornelius.feature.home.databinding.FragmentSettingsBinding
 import com.vito.cornelius.feature.home.settings.ui.model.SettingsEvent
@@ -33,12 +33,10 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        settingsViewModel.event.observe(viewLifecycleOwner, Observer { event ->
-            handleEvent(event)
-        })
-        settingsViewModel.isDarkThemeLive.observe(viewLifecycleOwner, Observer { isDarkTheme ->
-            isDarkTheme?.let { binding.darkThemeSwitch.isChecked = it }
-        })
+        with(viewLifecycleOwner) {
+            observe(settingsViewModel.event, ::handleEvent)
+            observe(settingsViewModel.isDarkThemeLive, ::handleDarkTheme)
+        }
 
         binding.darkThemeSwitch.setOnCheckedChangeListener { _, checked ->
             settingsViewModel.updateDarkThemeStatus(checked)
@@ -47,6 +45,10 @@ class SettingsFragment : Fragment() {
         binding.logoutButton.setOnClickListener {
             settingsViewModel.logoutButtonClicked()
         }
+    }
+
+    private fun handleDarkTheme(isDarkThemeEnabled: Boolean) {
+        binding.darkThemeSwitch.isChecked = isDarkThemeEnabled
     }
 
     private fun handleEvent(singleEvent: SingleEvent<SettingsEvent>) {

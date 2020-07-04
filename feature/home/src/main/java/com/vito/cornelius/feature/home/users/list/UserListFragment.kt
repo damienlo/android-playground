@@ -8,10 +8,10 @@ import android.widget.ImageView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.vito.cornelius.core.android.observe
 import com.vito.cornelius.feature.home.R
 import com.vito.cornelius.feature.home.databinding.FragmentUserListBinding
 import com.vito.cornelius.feature.home.users.list.UserListAdapter.UserSelectedListener
@@ -25,6 +25,8 @@ class UserListFragment : Fragment() {
 
     private var _binding: FragmentUserListBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var userListAdapter: UserListAdapter
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -41,16 +43,13 @@ class UserListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val usersAdapter =
-                UserListAdapter(
-                        UserSelectedListenerImpl()
-                )
+        userListAdapter = UserListAdapter(UserSelectedListenerImpl())
         val spacePx = resources.getDimensionPixelSize(R.dimen.keyline_2)
         with(binding.recyclerview) {
-            adapter = usersAdapter
+            adapter = userListAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
             addItemDecoration(
-                    com.vito.cornelius.feature.home.users.list.GridSpacingItemDecoration(
+                    GridSpacingItemDecoration(
                             spanCount = 2,
                             spacing = spacePx,
                             includeEdge = true
@@ -58,9 +57,11 @@ class UserListFragment : Fragment() {
             )
         }
 
-        userListViewModel.users.observe(viewLifecycleOwner, Observer { users ->
-            usersAdapter.setData(users)
-        })
+        viewLifecycleOwner.observe(userListViewModel.users, ::handleUserChanges)
+    }
+
+    private fun handleUserChanges(users: List<UserUiModel>) {
+        userListAdapter.setData(users)
     }
 
     private inner class UserSelectedListenerImpl : UserSelectedListener {

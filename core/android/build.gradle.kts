@@ -6,4 +6,5 @@ plugins {
 
 dependencies {
     implementation(Libraries.kotlinStdLib)
+    implementation(Libraries.liveDatalKtx)
 }

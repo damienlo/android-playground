@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.vito.cornelius.core.android.SingleEvent
+import com.vito.cornelius.core.android.observe
 import com.vito.cornelius.core.navigation.Navigation
 import com.vito.cornelius.feature.registration.R
 import com.vito.cornelius.feature.registration.common.ui.highlight
@@ -37,12 +37,10 @@ class RegistrationSignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        registrationSignInViewModel.event.observe(viewLifecycleOwner, Observer { event ->
-            handleEvent(event)
-        })
-        registrationSignInViewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
-            handleLoading(isLoading)
-        })
+        with(viewLifecycleOwner) {
+            observe(registrationSignInViewModel.event, ::handleEvent)
+            observe(registrationSignInViewModel.loading, ::handleLoading)
+        }
 
         val textToHighlight = getText(R.string.registration_not_a_member_yet_text_to_highlight)
         binding.alternativeSignUpText.highlight(textToHighlight.toString()) {

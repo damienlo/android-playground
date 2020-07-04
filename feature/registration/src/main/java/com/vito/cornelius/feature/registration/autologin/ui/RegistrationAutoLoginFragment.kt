@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.vito.cornelius.core.android.SingleEvent
+import com.vito.cornelius.core.android.observe
 import com.vito.cornelius.core.navigation.Navigation
 import com.vito.cornelius.feature.registration.autologin.ui.model.RegistrationAutoLoginEvent
 import com.vito.cornelius.feature.registration.autologin.ui.model.RegistrationAutoLoginEvent.NavigateToHome
@@ -36,9 +36,7 @@ class RegistrationAutoLoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        registrationAutoLoginViewModel.event.observe(viewLifecycleOwner, Observer { event ->
-            handleEvent(event)
-        })
+        viewLifecycleOwner.observe(registrationAutoLoginViewModel.event, ::handleEvent)
     }
 
     private fun handleEvent(singleEvent: SingleEvent<RegistrationAutoLoginEvent>) {

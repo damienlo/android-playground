@@ -1,12 +1,12 @@
 package com.vito.cornelius.feature.registration.signup.domain
 
-import com.vito.cornelius.feature.registration.domain.IAuthRepository
+import com.vito.cornelius.domain.common.repository.IAuthenticationRepository
 import com.vito.cornelius.feature.registration.signup.domain.model.SignUpFailureException
 import java.io.IOException
 import javax.inject.Inject
 
 class SignUpInteractor @Inject constructor(
-        private val authRepository: IAuthRepository
+        private val authRepository: IAuthenticationRepository
 ) {
 
     suspend operator fun invoke(name: String, email: String, password: String) {

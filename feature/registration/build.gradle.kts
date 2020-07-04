@@ -21,7 +21,7 @@ dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:navigation"))
 
-    implementation(project(":data:network"))
+    implementation(project(":domain:common"))
 
     implementation(Injection.daggerHilt)
     implementation(Injection.daggerHiltLifecycle)

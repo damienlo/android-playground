@@ -12,7 +12,7 @@ internal fun TestedExtension.configureAndroidCommonOptions() {
         versionName = App.versionName
 
         vectorDrawables.useSupportLibrary = true
-        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {

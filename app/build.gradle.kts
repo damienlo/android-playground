@@ -25,10 +25,15 @@ dependencies {
     kapt(Injection.daggerHiltLifecycleCompiler)
 
     implementation(project(":core:android"))
+    implementation(project(":core:coroutines"))
     implementation(project(":core:design"))
     implementation(project(":core:navigation"))
 
+    implementation(project(":data:authentication"))
     implementation(project(":data:network"))
+    implementation(project(":data:session"))
+
+    implementation(project(":domain:common"))
 
     implementation(project(":feature:home"))
     implementation(project(":feature:registration"))

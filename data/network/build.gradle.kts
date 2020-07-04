@@ -10,9 +10,7 @@ dependencies {
     implementation(Libraries.kotlinStdLib)
 
     implementation(Injection.daggerHilt)
-    implementation(Injection.daggerHiltLifecycle)
     kapt(Injection.daggerHiltCompiler)
-    kapt(Injection.daggerHiltLifecycleCompiler)
 
     implementation(Libraries.okHttp)
     implementation(Libraries.okHttpLoggingInterceptor)
@@ -20,7 +18,6 @@ dependencies {
     api(Libraries.retrofit)
     implementation(Libraries.retrofitCoroutines)
 
-    api(Libraries.moshi)
+    implementation(Libraries.moshi)
     implementation(Libraries.moshiConverter)
-    kapt(Libraries.moshiCodeGen)
 }

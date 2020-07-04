@@ -112,9 +112,21 @@ object TestLibraries {
         const val junit4 = "4.13"
         const val testRunner = "1.2.0"
         const val espresso = "3.2.0"
+        const val mockito = "3.3.3  "
+        const val mockitoInline = "3.3.3"
+        const val mockitoKotlin = "2.2.0"
+        const val androidxCore = "2.1.0"
+        const val coroutinesTest = "1.3.7"
     }
 
     const val junit4 = "junit:junit:${Versions.junit4}"
     const val testRunner = "androidx.test:runner:${Versions.testRunner}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
+
+    const val mockito = "org.mockito:mockito-core:${Versions.mockito}"
+    const val mockitoInline = "org.mockito:mockito-inline:${Versions.mockitoInline}"
+    const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}"
+
+    const val androidXCore = "androidx.arch.core:core-testing:${Versions.androidxCore}"
+    const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vito.cornelius.core.android.SingleEvent
 import com.vito.cornelius.feature.home.settings.data.DarkThemeRepository
-import com.vito.cornelius.feature.home.settings.logout.LogoutInteractor
+import com.vito.cornelius.feature.home.settings.domain.LogoutInteractor
 import com.vito.cornelius.feature.home.settings.ui.model.SettingsEvent
 import kotlinx.coroutines.launch
 

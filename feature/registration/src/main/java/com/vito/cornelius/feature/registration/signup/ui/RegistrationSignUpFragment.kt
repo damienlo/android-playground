@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.vito.cornelius.core.android.SingleEvent
 import com.vito.cornelius.core.android.observe
 import com.vito.cornelius.core.navigation.Navigation
+import com.vito.cornelius.domain.common.model.ErrorCause
+import com.vito.cornelius.domain.common.model.Resource
 import com.vito.cornelius.feature.registration.R
 import com.vito.cornelius.feature.registration.common.ui.highlight
 import com.vito.cornelius.feature.registration.databinding.RegistrationFragmentSignUpBinding
@@ -31,16 +33,6 @@ class RegistrationSignUpFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         _binding = RegistrationFragmentSignUpBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        with(viewLifecycleOwner) {
-            observe(registrationSignUpViewModel.event, ::handleEvent)
-            observe(registrationSignUpViewModel.loading, ::handleLoading)
-        }
 
         val textToHighlight =
                 getText(R.string.registration_already_a_member_sign_in_text_to_highlight)
@@ -57,13 +49,45 @@ class RegistrationSignUpFragment : Fragment() {
                     password = binding.form.passwordEditText.text.toString()
             )
         }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        with(viewLifecycleOwner) {
+            observe(registrationSignUpViewModel.event, ::handleEvent)
+            observe(registrationSignUpViewModel.status, ::handleStatus)
+        }
+    }
+
+    private fun handleStatus(signUpStatus: Resource<Unit>) {
+        when (signUpStatus) {
+            is Resource.Success ->
+                binding.viewFlipper.displayedChild = VIEW_FORM
+            is Resource.Loading ->
+                binding.viewFlipper.displayedChild = VIEW_LOADING
+            is Resource.Error<*> -> {
+                binding.viewFlipper.displayedChild = VIEW_ERROR
+                handleErrorStatus(signUpStatus.error)
+            }
+        }
+    }
+
+    private fun handleErrorStatus(errorCause: ErrorCause) {
+        when (errorCause) {
+            is ErrorCause.NetworkNotAvailable ->
+                Toast.makeText(requireContext(), "No Network", Toast.LENGTH_SHORT).show()
+            is ErrorCause.ServerError ->
+                Toast.makeText(requireContext(), "No Network", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun handleEvent(singleEvent: SingleEvent<RegistrationSignUpEvent>) {
         singleEvent.getContentIfNotHandled { event ->
             when (event) {
                 is RegistrationSignUpEvent.Navigation -> handleNavigationEvent(event)
-                is RegistrationSignUpEvent.Errors -> handleErrorEvent(event)
             }
         }
     }
@@ -77,23 +101,6 @@ class RegistrationSignUpFragment : Fragment() {
         }
     }
 
-    private fun handleErrorEvent(event: RegistrationSignUpEvent.Errors) {
-        when (event) {
-            is RegistrationSignUpEvent.Errors.NoNetwork ->
-                Toast.makeText(requireContext(), "No Network", Toast.LENGTH_SHORT).show()
-            is RegistrationSignUpEvent.Errors.Unexpected ->
-                Toast.makeText(requireContext(), "Unexpected error", Toast.LENGTH_SHORT).show()
-            is RegistrationSignUpEvent.Errors.EmailAlreadyExist ->
-                Toast.makeText(requireContext(), "Email already exist", Toast.LENGTH_SHORT).show()
-            is RegistrationSignUpEvent.Errors.PasswordTooWeak ->
-                Toast.makeText(requireContext(), "Password too weak", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun handleLoading(isLoading: Boolean) {
-        binding.viewFlipper.displayedChild = if (isLoading) VIEW_LOADING else VIEW_FORM
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -102,5 +109,6 @@ class RegistrationSignUpFragment : Fragment() {
     private companion object {
         private const val VIEW_FORM = 0
         private const val VIEW_LOADING = 1
+        private const val VIEW_ERROR = 1
     }
 }

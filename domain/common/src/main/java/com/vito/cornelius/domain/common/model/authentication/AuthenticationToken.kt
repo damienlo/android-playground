@@ -1,4 +1,4 @@
-package com.vito.cornelius.domain.common.model
+package com.vito.cornelius.domain.common.model.authentication
 
 data class AuthenticationToken(
         val createdAt: Long,

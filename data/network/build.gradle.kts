@@ -20,4 +20,5 @@ dependencies {
 
     implementation(Libraries.moshi)
     implementation(Libraries.moshiConverter)
+    kapt(Libraries.moshiCodeGen)
 }

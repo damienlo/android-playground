@@ -1,7 +1,7 @@
 package com.vito.cornelius.domain.common.repository
 
-import com.vito.cornelius.domain.common.model.AuthenticationToken
-import com.vito.cornelius.domain.common.model.UserSession
+import com.vito.cornelius.domain.common.model.authentication.AuthenticationToken
+import com.vito.cornelius.domain.common.model.authentication.UserSession
 
 interface IUserSessionRepository {
     fun get(): UserSession?

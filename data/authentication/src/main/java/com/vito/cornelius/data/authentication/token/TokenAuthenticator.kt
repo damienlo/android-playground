@@ -3,7 +3,7 @@ package com.vito.cornelius.data.authentication.token
 import android.util.Log
 import com.vito.cornelius.data.authentication.RefreshTokenService
 import com.vito.cornelius.data.authentication.model.response.AuthenticationTokenResponse
-import com.vito.cornelius.domain.common.model.AuthenticationToken
+import com.vito.cornelius.domain.common.model.authentication.AuthenticationToken
 import com.vito.cornelius.domain.common.repository.IUserSessionRepository
 import okhttp3.Authenticator
 import okhttp3.Request

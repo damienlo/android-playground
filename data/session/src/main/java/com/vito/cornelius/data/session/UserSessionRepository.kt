@@ -3,8 +3,8 @@ package com.vito.cornelius.data.session
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.vito.cornelius.data.session.model.SerializedSession
-import com.vito.cornelius.domain.common.model.AuthenticationToken
-import com.vito.cornelius.domain.common.model.UserSession
+import com.vito.cornelius.domain.common.model.authentication.AuthenticationToken
+import com.vito.cornelius.domain.common.model.authentication.UserSession
 import com.vito.cornelius.domain.common.repository.IUserSessionRepository
 import javax.inject.Inject
 import javax.inject.Named

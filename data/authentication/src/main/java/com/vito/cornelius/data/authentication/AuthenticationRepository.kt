@@ -5,8 +5,13 @@ import com.vito.cornelius.data.authentication.model.request.UserSignUpBodyReques
 import com.vito.cornelius.data.authentication.model.response.AuthenticationTokenResponse
 import com.vito.cornelius.data.authentication.model.response.UserCreatedResponse
 import com.vito.cornelius.data.authentication.model.response.UserLoginResponse
-import com.vito.cornelius.domain.common.model.AuthenticationToken
-import com.vito.cornelius.domain.common.model.UserSession
+import com.vito.cornelius.data.network.model.ApiError
+import com.vito.cornelius.data.network.model.NetworkResponse
+import com.vito.cornelius.data.network.safeApiCall
+import com.vito.cornelius.domain.common.model.ErrorCause
+import com.vito.cornelius.domain.common.model.Resource
+import com.vito.cornelius.domain.common.model.authentication.AuthenticationToken
+import com.vito.cornelius.domain.common.model.authentication.UserSession
 import com.vito.cornelius.domain.common.repository.IAuthenticationRepository
 import com.vito.cornelius.domain.common.repository.IUserSessionRepository
 import kotlinx.coroutines.GlobalScope
@@ -18,35 +23,42 @@ class AuthenticationRepository @Inject constructor(
         private val sessionRepository: IUserSessionRepository
 ) : IAuthenticationRepository {
 
-    override suspend fun createAccount(name: String, email: String, password: String) {
-        val userInfo = UserSignUpBodyRequest(
-                name = name,
-                email = email,
-                password = password
-        )
+    override suspend fun createAccount(
+            name: String,
+            email: String,
+            password: String
+    ): Resource<Unit> {
+        val userInfo = UserSignUpBodyRequest(name = name, email = email, password = password)
         val userCreatedResponse = authenticationService.signUp(userInfo)
-        sessionRepository.save(userSession = userCreatedResponse.toUserSession())
+        val response = safeApiCall {
+            sessionRepository.save(userSession = userCreatedResponse.toUserSession())
+        }
+        return response.toResource()
     }
 
-    override suspend fun login(email: String, password: String) {
-        val loginInfo = UserLoginBodyRequest(
-                email = email,
-                password = password
-        )
+    override suspend fun login(email: String, password: String): Resource<Unit> {
+        val loginInfo = UserLoginBodyRequest(email = email, password = password)
         val userLoginResponse = authenticationService.login(loginInfo)
-        sessionRepository.save(userSession = userLoginResponse.toUserSession())
+        val response = safeApiCall {
+            sessionRepository.save(userSession = userLoginResponse.toUserSession())
+        }
+        return response.toResource()
     }
 
-    override suspend fun autoLogin() {
+    override suspend fun autoLogin(): Resource<Unit> {
         val authenticationToken = authenticationService.refreshToken()
-        sessionRepository.save(newAuthenticationToken = authenticationToken.toAuthenticationToken())
+        val response = safeApiCall {
+            sessionRepository.save(newAuthenticationToken = authenticationToken.toAuthenticationToken())
+        }
+        return response.toResource()
     }
 
-    override suspend fun logout() {
+    override suspend fun logout(): Resource<Unit> {
         sessionRepository.clear()
         fireAndForgetSilently {
             authenticationService.logout()
         }
+        return Resource.Success(Unit)
     }
 
     // launch new coroutine in background and continue, catch any exception
@@ -73,4 +85,19 @@ class AuthenticationRepository @Inject constructor(
             token = this.token,
             expiresIn = this.expiresIn
     )
+
+    private fun NetworkResponse<Unit>.toResource(): Resource<Unit> = when (this) {
+        is NetworkResponse.Success -> Resource.Success(Unit)
+        is NetworkResponse.Failure -> Resource.Error<Unit>(this.error.toErrorCause())
+    }
+
+    private fun ApiError.toErrorCause(): ErrorCause = when (this) {
+        is ApiError.NoNetwork -> ErrorCause.NetworkNotAvailable
+        is ApiError.Timeout -> ErrorCause.NetworkNotAvailable
+        is ApiError.Server -> ErrorCause.ServerError(
+                errorCode = this.errorCode,
+                key = "TODO",
+                message = this.body ?: "TODO"
+        )
+    }
 }

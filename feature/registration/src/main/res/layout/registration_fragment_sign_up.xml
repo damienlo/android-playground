@@ -38,6 +38,24 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
+        <com.vito.cornelius.ui.illustration.view.IllustrationView
+            android:id="@+id/noNetworkErrorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:illuCtaText="@string/error_screen_retry"
+            app:illuDrawable="@drawable/illu_snail"
+            app:illuSubTitle="@string/error_screen_no_internet_connection_subtitle"
+            app:illuTitle="@string/error_screen_no_internet_connection_title" />
+
+        <com.vito.cornelius.ui.illustration.view.IllustrationView
+            android:id="@+id/genericErrorview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:illuCtaText="@string/error_screen_retry"
+            app:illuDrawable="@drawable/illu_snail"
+            app:illuSubTitle="@string/error_screen_no_internet_connection_subtitle"
+            app:illuTitle="@string/error_screen_no_internet_connection_title" />
+
     </ViewFlipper>
 
     <com.google.android.material.textview.MaterialTextView

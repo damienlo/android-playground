@@ -40,7 +40,9 @@ class CommonLibPlugin : BasePlugin() {
 
     override fun applyOnLibrary(libraryExtension: LibraryExtension) {
         super.applyOnLibrary(libraryExtension)
-        libraryExtension.configureAndroidCommonOptions()
+        with(libraryExtension) {
+            configureAndroidCommonOptions()
+        }
     }
 }
 

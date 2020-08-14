@@ -9,7 +9,9 @@ import com.vito.cornelius.core.android.SingleEvent
 import com.vito.cornelius.feature.home.settings.data.DarkThemeRepository
 import com.vito.cornelius.feature.home.settings.domain.LogoutInteractor
 import com.vito.cornelius.feature.home.settings.ui.model.SettingsEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettingsViewModel @ViewModelInject constructor(
         private val logout: LogoutInteractor,
@@ -22,7 +24,7 @@ class SettingsViewModel @ViewModelInject constructor(
     val isDarkThemeLive: LiveData<Boolean> = darkThemeRepository.isDarkThemeLive
 
     fun logoutButtonClicked() {
-        viewModelScope.launch {
+        viewModelScope.launch{
             logout()
             _event.value = SingleEvent(SettingsEvent.Navigation.NavigateToRegistration)
         }

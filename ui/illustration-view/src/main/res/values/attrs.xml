@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IllustrationView">
+
+        <attr name="illuDrawable" format="reference" />
+        <attr name="illuTitle" format="string" />
+        <attr name="illuSubTitle" format="string" />
+        <attr name="illuCtaText" format="string" />
+
+    </declare-styleable>
+</resources>

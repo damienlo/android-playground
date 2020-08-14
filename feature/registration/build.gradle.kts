@@ -23,6 +23,8 @@ dependencies {
 
     implementation(project(":domain:common"))
 
+    implementation(project(":ui:illustration-view"))
+
     implementation(Injection.daggerHilt)
     implementation(Injection.daggerHiltLifecycle)
     kapt(Injection.daggerHiltCompiler)

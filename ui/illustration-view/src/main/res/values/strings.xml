@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_screen_no_internet_connection_title">Oh Snap! No internet connection</string>
+    <string name="error_screen_no_internet_connection_subtitle">Make sure that wifi or mobile data is turned on</string>
+
+    <string name="error_screen_generic_title">Oh Snap! No something went wrong</string>
+    <string name="error_screen_generic_subtitle">We keep track of these errors, buf feel free to contact us if the problem persist</string>
+
+    <string name="error_screen_retry">RETRY</string>
+</resources>

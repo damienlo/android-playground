@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -43,11 +42,13 @@ class RegistrationSignUpFragment : Fragment() {
         }
 
         binding.form.signUpButton.setOnClickListener {
-            registrationSignUpViewModel.signUpClicked(
-                    name = binding.form.nameEditText.text.toString(),
-                    email = binding.form.emailEditText.text.toString(),
-                    password = binding.form.passwordEditText.text.toString()
-            )
+            singUpClicked()
+        }
+        binding.noNetworkErrorView.setCtaOnClickListener {
+            singUpClicked()
+        }
+        binding.genericErrorview.setCtaOnClickListener {
+            singUpClicked()
         }
 
         return binding.root
@@ -62,6 +63,14 @@ class RegistrationSignUpFragment : Fragment() {
         }
     }
 
+    private fun singUpClicked() {
+        registrationSignUpViewModel.signUpClicked(
+                name = binding.form.nameEditText.text.toString(),
+                email = binding.form.emailEditText.text.toString(),
+                password = binding.form.passwordEditText.text.toString()
+        )
+    }
+
     private fun handleStatus(signUpStatus: Resource<Unit>) {
         when (signUpStatus) {
             is Resource.Success ->
@@ -69,7 +78,6 @@ class RegistrationSignUpFragment : Fragment() {
             is Resource.Loading ->
                 binding.viewFlipper.displayedChild = VIEW_LOADING
             is Resource.Error<*> -> {
-                binding.viewFlipper.displayedChild = VIEW_ERROR
                 handleErrorStatus(signUpStatus.error)
             }
         }
@@ -78,9 +86,9 @@ class RegistrationSignUpFragment : Fragment() {
     private fun handleErrorStatus(errorCause: ErrorCause) {
         when (errorCause) {
             is ErrorCause.NetworkNotAvailable ->
-                Toast.makeText(requireContext(), "No Network", Toast.LENGTH_SHORT).show()
+                binding.viewFlipper.displayedChild = VIEW_NO_NETWORK_ERROR
             is ErrorCause.ServerError ->
-                Toast.makeText(requireContext(), "No Network", Toast.LENGTH_SHORT).show()
+                binding.viewFlipper.displayedChild = VIEW_GENERIC_ERROR
         }
     }
 
@@ -109,6 +117,7 @@ class RegistrationSignUpFragment : Fragment() {
     private companion object {
         private const val VIEW_FORM = 0
         private const val VIEW_LOADING = 1
-        private const val VIEW_ERROR = 1
+        private const val VIEW_NO_NETWORK_ERROR = 2
+        private const val VIEW_GENERIC_ERROR = 3
     }
 }

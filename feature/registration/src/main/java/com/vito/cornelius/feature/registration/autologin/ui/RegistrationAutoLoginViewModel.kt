@@ -6,9 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vito.cornelius.core.android.SingleEvent
+import com.vito.cornelius.domain.common.model.Resource
 import com.vito.cornelius.feature.registration.autologin.domain.RegistrationAutoLoginInteractor
-import com.vito.cornelius.feature.registration.autologin.domain.model.AutoLoginFailureException
-import com.vito.cornelius.feature.registration.autologin.domain.model.MissingCredentialException
 import com.vito.cornelius.feature.registration.autologin.ui.model.RegistrationAutoLoginEvent
 import kotlinx.coroutines.launch
 
@@ -21,14 +20,11 @@ class RegistrationAutoLoginViewModel @ViewModelInject constructor(
 
     init {
         viewModelScope.launch {
-            runCatching {
-                autoLogin()
-            }.onSuccess {
+            val result = autoLogin()
+            if (result is Resource.Success<*>) {
                 _event.value = SingleEvent(RegistrationAutoLoginEvent.NavigateToHome)
-            }.onFailure { exception ->
-                if (exception is AutoLoginFailureException || exception is MissingCredentialException) {
-                    _event.value = SingleEvent(RegistrationAutoLoginEvent.NavigateToSignIn)
-                }
+            } else {
+                _event.value = SingleEvent(RegistrationAutoLoginEvent.NavigateToSignIn)
             }
         }
     }

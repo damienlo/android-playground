@@ -8,13 +8,11 @@ import java.net.SocketTimeoutException
 
 suspend inline fun <T : Any> safeApiCall(
         crossinline call: suspend () -> T
-): NetworkResponse<T> {
-    return try {
-        val data = call.invoke()
-        NetworkResponse.Success(data)
-    } catch (e: Exception) {
-        NetworkResponse.Failure(e.toApiError())
-    }
+): NetworkResponse<T> = try {
+    val data = call.invoke()
+    NetworkResponse.Success(data)
+} catch (e: Exception) {
+    NetworkResponse.Failure(e.toApiError())
 }
 
 fun HttpException.toServerApiError(): ApiError.Server {
